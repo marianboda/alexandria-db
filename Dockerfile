@@ -9,9 +9,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/pgjwt
 
-# Built-in extensions (just need CREATE EXTENSION):
-# - pgcrypto
-# - pg_stat_statements (needs shared_preload_libraries)
-# - pg_trgm
-# - btree_gin
-# - btree_gist
+RUN echo "CREATE EXTENSION IF NOT EXISTS vector;\nCREATE EXTENSION IF NOT EXISTS pgcrypto;\nCREATE EXTENSION IF NOT EXISTS pgjwt CASCADE;" > /docker-entrypoint-initdb.d/extensions.sql
