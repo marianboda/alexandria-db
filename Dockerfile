@@ -2,8 +2,12 @@ FROM pgvector/pgvector:pg18
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-18-cron \
-    postgresql-18-pgjwt \
-    && rm -rf /var/lib/apt/lists/*
+    make gcc postgresql-server-dev-18 git \
+    && git clone https://github.com/michelp/pgjwt.git /tmp/pgjwt \
+    && cd /tmp/pgjwt && make install \
+    && apt-get purge -y make gcc postgresql-server-dev-18 git \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/pgjwt
 
 # Built-in extensions (just need CREATE EXTENSION):
 # - pgcrypto
